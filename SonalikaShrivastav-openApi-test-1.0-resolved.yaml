@@ -1,0 +1,91 @@
+---
+openapi: 3.0.0
+info:
+  title: OpenApi for test
+  description: The API for test
+  contact:
+    name: sonalika
+    url: http://something.com
+  version: "1.0"
+servers:
+- url: http://some.com
+- url: http://test.com
+paths:
+  /student:
+    description: student Resource
+    get:
+      description: opreation to fetch student
+      parameters:
+      - name: studentname
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: sonalika
+      responses:
+        "200":
+          description: success Response
+          content:
+            application/jsone:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+    post:
+      description: add a new student
+      requestBody:
+        content:
+          application/jsone:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/inline_response_200'
+      responses:
+        "201":
+          description: Record successfully added
+  /student{id}:
+    description: get student based on path parameter
+    get:
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: success responce with path param
+          content:
+            application/jsone:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+components:
+  schemas:
+    inline_response_200:
+      properties:
+        studentId:
+          type: integer
+          example: 3
+        studentName:
+          type: string
+          example: kanika
+        studentRemarks:
+          type: string
+          example: "89"
+    inline_response_200_1:
+      properties:
+        studentId:
+          type: integer
+          example: 3
+        studentName:
+          type: string
+          example: kanika
+        studentRemarks:
+          type: string
+          example: high grade student
