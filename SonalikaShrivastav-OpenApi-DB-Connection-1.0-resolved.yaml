@@ -4,10 +4,11 @@ info:
   title: OpenApi for Database connection
   description: The API for connecting MySql Database
   contact:
+    name: sonalika shrivastav
     email: sonalika@cygniusconsulting.com
   version: "1.0"
 servers:
-- url: https://api.mysql.com
+- url: https://api.mysqltest.com
   description: New Server 1
 - url: https://{hostname}:{port}/connect
   description: port number
@@ -20,14 +21,10 @@ tags:
 - name: mysql
   description: create a connection with mysql
 paths:
-  /connectionTest/mysql:
-    summary: Connection with mysql database
-    description: test connection it connect or not
+  /TestConnection/mysql:
+    description: Connection with mysql database
     post:
-      tags:
-      - testMySqlConnection
-      summary: try to connect
-      description: Return connected or not
+      description: try to connecting with mysql
       operationId: mysqlconnect
       requestBody:
         description: connected successfully
@@ -37,15 +34,15 @@ paths:
               $ref: '#/components/schemas/mysqConnectionParams'
       responses:
         "2XX":
-          description: All OK!
+          description: All OK! (successfull)
         "4XX":
-          description: (Bad request) you sent an invalid request
+          description: client errors
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorMessageResponse'
         "5XX":
-          description: (Internal Server Error) a generic error occurred on the server
+          description: Server Error
           content:
             application/json:
               schema:
@@ -63,29 +60,27 @@ components:
       properties:
         databaseId:
           type: number
-          description: unique key for database
+          description: unique key
         serverHostname:
           type: string
-          description: server name for login in mysql
+          description: server name
+          example: localhost
         port:
           type: number
-          description: port number for connection in mysql
+          description: port number
+          example: 3306
         username:
           type: string
-          description: user name for login in mysql
+          description: user name
+          example: admin
         password:
           type: string
-          description: password for login in mysql
+          description: password
+          example: root
         database:
           type: string
-          description: name of the database
-      description: mysql paramaters
-      example:
-        server: localhost
-        port: 3306
-        username: admin
-        password: root
-        database: test
+          description: database name
+          example: test
     errorMessageResponse:
       type: object
       properties:
@@ -98,7 +93,7 @@ components:
         solution:
           type: string
           description: probable solution
-      description: Represents error message
+      description: Represents error messages
   responses:
     errorMessage:
       description: could not connect
@@ -107,13 +102,13 @@ components:
           schema:
             $ref: '#/components/schemas/errorMessageResponse'
     "4XXResponse":
-      description: (Bad request) you sent an invalid request
+      description: client errors
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/errorMessageResponse'
     "5XXResponse":
-      description: (Internal Server Error) a generic error occurred on the server
+      description: Server Error
       content:
         application/json:
           schema:
