@@ -1,0 +1,180 @@
+---
+openapi: 3.0.0
+info:
+  title: OpenApi for Database connection
+  description: The API for connecting MySql Database
+  contact:
+    email: sonalika@cygniusconsulting.com
+  version: "1.0"
+servers:
+- url: https://api.mysql.com
+  description: New Server 1
+- url: https://{hostname}:{port}/connect
+  description: port number
+  variables:
+    hostname:
+      default: localhost
+    port:
+      default: "3306"
+tags:
+- name: mysql
+  description: create a connection with mysql
+paths:
+  /connectionTest/mysql:
+    summary: Connection with mysql database
+    description: test connection it connect or not
+    post:
+      tags:
+      - testMySqlConnection
+      summary: try to connect
+      description: Return connected or not
+      operationId: mysqlconnect
+      requestBody:
+        description: connected successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mysqConnectionParams'
+      responses:
+        "201":
+          description: All Ok!
+        "400":
+          description: (Bad request) you sent an invalid request, such as lacking required request body or parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "401":
+          description: (Unauthorized) failed to authenticate you with the server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "403":
+          description: (Forbidden) you are authenticated but does not have permission to access the requested resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "404":
+          description: (Not Found) the requested resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "412":
+          description: (Precondition Failed) one or more conditions in the request header fields evaluated to false
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "500":
+          description: (Internal Server Error) a generic error occurred on the server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "503":
+          description: (Service Unavailable) the requested service is not available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+components:
+  schemas:
+    mysqConnectionParams:
+      required:
+      - database
+      - password
+      - port
+      - server
+      - username
+      type: object
+      properties:
+        databaseId:
+          type: number
+          description: unique key for database
+        serverHostname:
+          type: string
+          description: server name for login in mysql
+        port:
+          type: number
+          description: port number for connection in mysql
+        username:
+          type: string
+          description: user name for login in mysql
+        password:
+          type: string
+          description: password for login in mysql
+        database:
+          type: string
+          description: name of the database
+      description: mysql paramaters
+      example:
+        server: localhost
+        port: 3306
+        username: admin
+        password: root
+        database: test
+    errorMessageResponse:
+      type: object
+      properties:
+        errorId:
+          type: number
+          description: unique error code
+        error:
+          type: string
+          description: shows error message
+        solution:
+          type: string
+          description: probable solution
+      description: Represents error message
+  responses:
+    errorMessage:
+      description: could not connect
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "400Response":
+      description: (Bad request) you sent an invalid request, such as lacking required request body or parameter
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "401Response":
+      description: (Unauthorized) failed to authenticate you with the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "403Response":
+      description: (Forbidden) you are authenticated but does not have permission to access the requested resource
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "404Response":
+      description: (Not Found) the requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "412Response":
+      description: (Precondition Failed) one or more conditions in the request header fields evaluated to false
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "500Response":
+      description: (Internal Server Error) a generic error occurred on the server
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
+    "503Response":
+      description: (Service Unavailable) the requested service is not available
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/errorMessageResponse'
