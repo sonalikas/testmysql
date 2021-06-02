@@ -26,6 +26,47 @@ paths:
     post:
       description: try to connecting with mysql
       operationId: mysqlconnect
+      parameters:
+      - name: port
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          example: 3306
+      - name: server name
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: localhost
+      - name: username
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: sonalika
+      - name: password
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: pass@123
+      - name: database
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: database name
       requestBody:
         description: connected successfully
         content:
