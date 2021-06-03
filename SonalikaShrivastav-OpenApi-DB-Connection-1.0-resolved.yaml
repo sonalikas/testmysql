@@ -134,6 +134,12 @@ paths:
 components:
   schemas:
     mysqConnectionParams:
+      required:
+      - database
+      - password
+      - port
+      - server
+      - username
       type: object
       properties:
         databaseId:
@@ -159,6 +165,12 @@ components:
           type: string
           description: database name
           example: test
+      example:
+        server: localhost
+        port: 3306
+        username: admin
+        password: root
+        database: test
     errorMessageResponse:
       type: object
       properties:
