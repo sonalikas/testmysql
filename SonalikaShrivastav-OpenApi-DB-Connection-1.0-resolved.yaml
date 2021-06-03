@@ -19,13 +19,19 @@ servers:
       default: "3306"
 tags:
 - name: mysql
-  description: create a connection with mysql
+  description: create an test a connection with mysql
+- name: save mysqlDB
+  description: save mySql database
+- name: run query
+  description: run a query on database
+- name: save statement
+  description: save the output of query
 paths:
   /TestConnection/mysql:
     description: Connection with mysql database
     post:
       description: try to connecting with mysql
-      operationId: mysqlconnect
+      operationId: mysqlConnect
       parameters:
       - name: port
         in: query
@@ -88,6 +94,147 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorMessageResponse'
+  /saveConnection/mysql:
+    description: Connection with mysql database
+    post:
+      description: try to connecting with mysql
+      operationId: mysqlSave
+      parameters:
+      - name: port
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: number
+          example: 3306
+      - name: server name
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: localhost
+      - name: username
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: sonalika
+      - name: password
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: pass@123
+      - name: database
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: database name
+      requestBody:
+        description: connected successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mysqConnectionParams'
+      responses:
+        "2XX":
+          description: save (successfull)
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: your database is saved successfully....
+        "4XX":
+          description: client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+  /mysql/executeQuery:
+    description: run query with mysql database
+    post:
+      parameters:
+      - name: database
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: employee
+      - name: query
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: select * from tab;
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryParams'
+      responses:
+        "2XX":
+          description: all ok! ( Run successfully)
+        "4XX":
+          description: client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+  /mysql/getResponse:
+    description: get result from query
+    post:
+      operationId: getResponce
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/getResponseParams'
+      responses:
+        "2XX":
+          description: status of response
+          content:
+            text/cvs:
+              schema:
+                type: string
+                example: 200,sonalika,B1,10
+        "4XX":
+          description: client errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
+        "5XX":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMessageResponse'
 components:
   schemas:
     mysqConnectionParams:
@@ -103,7 +250,7 @@ components:
         port:
           type: number
           description: port number
-          example: 3306
+          default: 3306
         username:
           type: string
           description: user name
@@ -129,6 +276,23 @@ components:
           type: string
           description: probable solution
       description: Represents error messages
+    QueryParams:
+      type: object
+      properties:
+        database:
+          type: string
+          description: database name
+          example: test
+        query:
+          type: string
+          description: Query statement
+          example: slect * from tab;
+      description: query parameters
+    getResponseParams:
+      type: object
+      properties:
+        databseParams:
+          $ref: '#/components/schemas/mysqConnectionParams'
   responses:
     errorMessage:
       description: could not connect
