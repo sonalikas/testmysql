@@ -32,47 +32,6 @@ paths:
     post:
       description: try to connecting with mysql
       operationId: mysqlConnect
-      parameters:
-      - name: port
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: number
-          example: 3306
-      - name: serverName
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: localhost
-      - name: username
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: sonalika
-      - name: password
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: pass@123
-      - name: database
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: database name
       requestBody:
         description: connected successfully
         content:
@@ -99,47 +58,6 @@ paths:
     post:
       description: try to connecting with mysql
       operationId: mysqlSave
-      parameters:
-      - name: port
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: number
-          example: 3306
-      - name: server name
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: localhost
-      - name: username
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: sonalika
-      - name: password
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: pass@123
-      - name: database
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: database name
       requestBody:
         description: connected successfully
         content:
@@ -164,23 +82,7 @@ paths:
   /mysql/executeQuery:
     description: run query with mysql database
     post:
-      parameters:
-      - name: database
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: employee
-      - name: query
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
-          example: select * from tab;
+      operationId: excuteQuery
       requestBody:
         content:
           application/json:
@@ -201,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorMessageResponse'
-  /mysql/getResponse:
+  /mysql/getstatement:
     description: get result from query
     post:
       operationId: getResponce
@@ -214,10 +116,9 @@ paths:
         "2XX":
           description: status of response
           content:
-            text/cvs:
+            text/plain:
               schema:
                 type: string
-                example: 200,sonalika,B1,10
         "4XX":
           description: client errors
           content:
@@ -274,20 +175,19 @@ components:
     QueryParams:
       type: object
       properties:
-        database:
-          type: string
-          description: database name
-          example: test
+        databaseParams:
+          $ref: '#/components/schemas/mysqConnectionParams'
         query:
           type: string
           description: Query statement
           example: slect * from tab;
+        url:
+          type: string
+          description: Url query
       description: query parameters
     getResponseParams:
-      type: object
-      properties:
-        databseParams:
-          $ref: '#/components/schemas/mysqConnectionParams'
+      type: string
+      description: run query response with url
   responses:
     errorMessage:
       description: could not connect
