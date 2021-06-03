@@ -41,7 +41,7 @@ paths:
         schema:
           type: number
           example: 3306
-      - name: server name
+      - name: serverName
         in: query
         required: true
         style: form
@@ -149,11 +149,6 @@ paths:
       responses:
         "2XX":
           description: save (successfull)
-          content:
-            text/plain:
-              schema:
-                type: string
-                example: your database is saved successfully....
         "4XX":
           description: client errors
           content:
